@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -19,9 +20,9 @@ public class Calculator {
         int result = 0;
 
         try (ZipFile input = new ZipFile(zipFilePath)) {
-            Enumeration<? extends ZipEntry> entries = input.entries();
-            while(entries.hasMoreElements()){
-                ZipEntry entry = entries.nextElement();
+            Iterator<? extends ZipEntry> entries = input.stream().iterator();
+            while(entries.hasNext()){
+                ZipEntry entry = entries.next();
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(input.getInputStream(entry)))) {
                     int ch;
                     while ((ch = br.read()) != -1) {
@@ -46,9 +47,9 @@ public class Calculator {
     public Integer getMaxWordLength(String zipFilePath) {
         int max = 0;
         try (ZipFile input = new ZipFile(zipFilePath)) {
-            Enumeration<? extends ZipEntry> entries = input.entries();
-            while(entries.hasMoreElements()){
-                ZipEntry entry = entries.nextElement();
+            Iterator<? extends ZipEntry> entries = input.stream().iterator();
+            while(entries.hasNext()){
+                ZipEntry entry = entries.next();
                 try (Scanner sc = new Scanner(new InputStreamReader(input.getInputStream(entry)))) {
                     while (sc.hasNext()) {
                         int length = sc.next().length();
